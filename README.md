@@ -1,7 +1,7 @@
 # Centralized Allure Reports Server
 
-[![CI/CD Pipeline](https://github.com/vsbopi/centralized-allure-reports/actions/workflows/ci.yml/badge.svg)](https://github.com/vsbopi/centralized-allure-reports/actions/workflows/ci.yml)
-[![Docker Build](https://github.com/vsbopi/centralized-allure-reports/actions/workflows/docker.yml/badge.svg)](https://github.com/vsbopi/centralized-allure-reports/actions/workflows/docker.yml)
+[![CI/CD Pipeline](https://github.com/vsbopi/centralized-allure-server/actions/workflows/ci.yml/badge.svg)](https://github.com/vsbopi/centralized-allure-server/actions/workflows/ci.yml)
+[![Docker Build](https://github.com/vsbopi/centralized-allure-server/actions/workflows/docker.yml/badge.svg)](https://github.com/vsbopi/centralized-allure-server/actions/workflows/docker.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=flat&logo=docker&logoColor=white)](https://hub.docker.com/)
@@ -290,7 +290,7 @@ After=network.target
 [Service]
 Type=simple
 User=www-data
-WorkingDirectory=/path/to/centralized-allure-reports
+WorkingDirectory=/path/to/centralized-allure-server
 Environment=PATH=/path/to/your/venv/bin
 ExecStart=/path/to/your/venv/bin/python app.py
 Restart=always
