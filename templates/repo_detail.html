@@ -1,0 +1,171 @@
+{% extends "base.html" %}
+
+{% block title %}{{ repo_name }} - Centralized Allure Reports{% endblock %}
+
+{% block header_title %}{{ repo_name }}{% endblock %}
+{% block header_subtitle %}Branches with test reports{% endblock %}
+
+{% block breadcrumb %}
+<div class="breadcrumb">
+    <a href="{{ url_for('index') }}">Home</a>
+    <span>/</span>
+    <strong>{{ repo_name }}</strong>
+</div>
+{% endblock %}
+
+{% block content %}
+<style>
+    .report-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 25px;
+        margin-top: 20px;
+    }
+    
+    .report-card {
+        background: linear-gradient(135deg, #fff, #f8f9fa);
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        border: 1px solid #e9ecef;
+    }
+    
+    .report-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+    
+    .report-card.allure-report {
+        border-left: 5px solid #28a745;
+    }
+    
+    .report-card.allure-results {
+        border-left: 5px solid #17a2b8;
+    }
+    
+    .report-title {
+        font-size: 1.4em;
+        font-weight: 600;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+    }
+    
+    .report-title.allure-report {
+        color: #28a745;
+    }
+    
+    .report-title.allure-results {
+        color: #17a2b8;
+    }
+    
+    .report-title::before {
+        margin-right: 12px;
+        font-size: 1.3em;
+    }
+    
+    .report-title.allure-report::before {
+        content: "📊";
+    }
+    
+    .report-title.allure-results::before {
+        content: "📋";
+    }
+    
+    .report-description {
+        color: #6c757d;
+        margin-bottom: 25px;
+        line-height: 1.6;
+        font-size: 1em;
+    }
+    
+    .btn-report {
+        width: 100%;
+        text-align: center;
+        padding: 15px;
+        font-size: 1.1em;
+        font-weight: 500;
+    }
+    
+    .btn-report.allure-report {
+        background: linear-gradient(135deg, #28a745, #20c997);
+    }
+    
+    .btn-report.allure-results {
+        background: linear-gradient(135deg, #17a2b8, #20c997);
+    }
+    
+    .branch-card {
+        border-left: 5px solid #6f42c1;
+    }
+    
+    .branch-title {
+        color: #6f42c1;
+    }
+    
+    .btn-branch {
+        width: 100%;
+        text-align: center;
+        padding: 15px;
+        font-size: 1.1em;
+        font-weight: 500;
+        background: linear-gradient(135deg, #6f42c1, #5a31a0);
+    }
+    
+    .empty-state {
+        text-align: center;
+        padding: 80px 20px;
+        color: #6c757d;
+    }
+    
+    .empty-state h3 {
+        font-size: 1.8em;
+        margin-bottom: 20px;
+        color: #495057;
+    }
+    
+    .empty-state p {
+        font-size: 1.2em;
+        line-height: 1.8;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+    
+    .back-btn {
+        margin-bottom: 20px;
+    }
+</style>
+
+<div class="back-btn">
+    <a href="{{ url_for('index') }}" class="btn btn-secondary">← Back to Repositories</a>
+</div>
+
+{% if branches %}
+    <div class="report-grid">
+        {% for branch in branches %}
+        <div class="report-card branch-card">
+            <div class="report-title branch-title">
+                🌿 {{ branch }}
+            </div>
+            <div class="report-description">
+                View test reports and results for the <strong>{{ branch }}</strong> branch.
+            </div>
+            <a href="{{ url_for('branch_detail', repo_name=repo_name, branch_name=branch) }}" 
+               class="btn btn-branch">
+                View Branch Reports
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="empty-state">
+        <h3>No Branches Available</h3>
+        <p>
+            No branches found for <strong>{{ repo_name }}</strong>.<br>
+            Ensure your GitHub Actions are uploading reports to branch directories like 
+            <code>{{ repo_name }}/main/allure-report/</code> in your S3 bucket.
+        </p>
+    </div>
+{% endif %}
+{% endblock %}

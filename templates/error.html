@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}Error - Centralized Allure Reports{% endblock %}
+
+{% block header_title %}Error{% endblock %}
+{% block header_subtitle %}Something went wrong{% endblock %}
+
+{% block content %}
+<style>
+    .error-container {
+        text-align: center;
+        padding: 60px 20px;
+        color: #dc3545;
+    }
+    
+    .error-icon {
+        font-size: 4em;
+        margin-bottom: 20px;
+    }
+    
+    .error-title {
+        font-size: 2em;
+        margin-bottom: 15px;
+        color: #721c24;
+    }
+    
+    .error-message {
+        font-size: 1.2em;
+        line-height: 1.6;
+        margin-bottom: 30px;
+        color: #856404;
+        background: #fff3cd;
+        padding: 20px;
+        border-radius: 8px;
+        border: 1px solid #ffeaa7;
+    }
+    
+    .back-home {
+        margin-top: 20px;
+    }
+</style>
+
+<div class="error-container">
+    <div class="error-icon">⚠️</div>
+    <h2 class="error-title">Oops! Something went wrong</h2>
+    <div class="error-message">
+        <strong>Error:</strong> {{ error }}
+    </div>
+    <div class="back-home">
+        <a href="{{ url_for('index') }}" class="btn">Go Back Home</a>
+    </div>
+</div>
+{% endblock %}

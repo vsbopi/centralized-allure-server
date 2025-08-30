@@ -1,0 +1,196 @@
+{% extends "base.html" %}
+
+{% block title %}{{ branch_name }} - {{ repo_name }} - Centralized Allure Reports{% endblock %}
+
+{% block header_title %}{{ repo_name }} / {{ branch_name }}{% endblock %}
+{% block header_subtitle %}Test reports for this branch{% endblock %}
+
+{% block breadcrumb %}
+<div class="breadcrumb">
+    <a href="{{ url_for('index') }}">Home</a>
+    <span>/</span>
+    <a href="{{ url_for('repo_detail', repo_name=repo_name) }}">{{ repo_name }}</a>
+    <span>/</span>
+    <strong>{{ branch_name }}</strong>
+</div>
+{% endblock %}
+
+{% block content %}
+<style>
+    .report-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 25px;
+        margin-top: 20px;
+    }
+    
+    .report-card {
+        background: linear-gradient(135deg, #fff, #f8f9fa);
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        border: 1px solid #e9ecef;
+    }
+    
+    .report-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+    
+    .report-card.allure-report {
+        border-left: 5px solid #28a745;
+    }
+    
+    .report-card.allure-results {
+        border-left: 5px solid #17a2b8;
+    }
+    
+    .report-title {
+        font-size: 1.4em;
+        font-weight: 600;
+        margin-bottom: 15px;
+        display: flex;
+        align-items: center;
+    }
+    
+    .report-title.allure-report {
+        color: #28a745;
+    }
+    
+    .report-title.allure-results {
+        color: #17a2b8;
+    }
+    
+    .report-title::before {
+        margin-right: 12px;
+        font-size: 1.3em;
+    }
+    
+    .report-title.allure-report::before {
+        content: "📊";
+    }
+    
+    .report-title.allure-results::before {
+        content: "📋";
+    }
+    
+    .report-description {
+        color: #6c757d;
+        margin-bottom: 25px;
+        line-height: 1.6;
+        font-size: 1em;
+    }
+    
+    .btn-report {
+        width: 100%;
+        text-align: center;
+        padding: 15px;
+        font-size: 1.1em;
+        font-weight: 500;
+    }
+    
+    .btn-report.allure-report {
+        background: linear-gradient(135deg, #28a745, #20c997);
+    }
+    
+    .btn-report.allure-results {
+        background: linear-gradient(135deg, #17a2b8, #20c997);
+    }
+    
+    .empty-state {
+        text-align: center;
+        padding: 80px 20px;
+        color: #6c757d;
+    }
+    
+    .empty-state h3 {
+        font-size: 1.8em;
+        margin-bottom: 20px;
+        color: #495057;
+    }
+    
+    .empty-state p {
+        font-size: 1.2em;
+        line-height: 1.8;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+    
+    .back-btn {
+        margin-bottom: 20px;
+    }
+    
+    .branch-info {
+        background: linear-gradient(135deg, #f3e5f5, #e1bee7);
+        border-radius: 8px;
+        padding: 15px 20px;
+        margin-bottom: 20px;
+        color: #4a148c;
+        display: flex;
+        align-items: center;
+    }
+    
+    .branch-info::before {
+        content: "🌿";
+        margin-right: 10px;
+        font-size: 1.2em;
+    }
+    
+    .branch-info h4 {
+        margin-bottom: 5px;
+    }
+</style>
+
+<div class="back-btn">
+    <a href="{{ url_for('repo_detail', repo_name=repo_name) }}" class="btn btn-secondary">← Back to {{ repo_name }}</a>
+</div>
+
+<div class="branch-info">
+    <div>
+        <h4>Branch: {{ branch_name }}</h4>
+        <p>Test reports and results for this branch</p>
+    </div>
+</div>
+
+{% if reports %}
+    <div class="report-grid">
+        {% for report in reports %}
+        <div class="report-card {{ report }}">
+            <div class="report-title {{ report }}">
+                {% if report == 'allure-report' %}
+                    Allure Report
+                {% elif report == 'allure-results' %}
+                    Allure Results
+                {% endif %}
+            </div>
+            <div class="report-description">
+                {% if report == 'allure-report' %}
+                    Interactive HTML test report with detailed test results, trends, and analytics.
+                {% elif report == 'allure-results' %}
+                    Raw test result files and artifacts from the latest test execution.
+                {% endif %}
+            </div>
+            <a href="{{ url_for('view_report', repo_name=repo_name, branch_name=branch_name, report_type=report) }}" 
+               class="btn btn-report {{ report }}">
+                {% if report == 'allure-report' %}
+                    View Report
+                {% elif report == 'allure-results' %}
+                    Browse Files
+                {% endif %}
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="empty-state">
+        <h3>No Reports Available</h3>
+        <p>
+            No allure reports found for <strong>{{ repo_name }}/{{ branch_name }}</strong>.<br>
+            Ensure your GitHub Actions are uploading reports to the <code>{{ repo_name }}/{{ branch_name }}/allure-report/</code> 
+            and <code>{{ repo_name }}/{{ branch_name }}/allure-results/</code> directories in your S3 bucket.
+        </p>
+    </div>
+{% endif %}
+{% endblock %}
+

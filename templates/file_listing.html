@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+
+{% block title %}{{ report_type }} - {{ branch_name }} - {{ repo_name }} - Centralized Allure Reports{% endblock %}
+
+{% block header_title %}{{ repo_name }} / {{ branch_name }} / {{ report_type }}{% endblock %}
+{% block header_subtitle %}Browse files in this directory{% endblock %}
+
+{% block breadcrumb %}
+<div class="breadcrumb">
+    <a href="{{ url_for('index') }}">Home</a>
+    <span>/</span>
+    <a href="{{ url_for('repo_detail', repo_name=repo_name) }}">{{ repo_name }}</a>
+    <span>/</span>
+    <a href="{{ url_for('branch_detail', repo_name=repo_name, branch_name=branch_name) }}">{{ branch_name }}</a>
+    <span>/</span>
+    <strong>{{ report_type }}</strong>
+</div>
+{% endblock %}
+
+{% block content %}
+<style>
+    .file-list {
+        background: #f8f9fa;
+        border-radius: 8px;
+        overflow: hidden;
+        margin-top: 20px;
+    }
+    
+    .file-item {
+        display: flex;
+        align-items: center;
+        padding: 15px 20px;
+        border-bottom: 1px solid #dee2e6;
+        transition: background-color 0.2s ease;
+    }
+    
+    .file-item:hover {
+        background-color: #e9ecef;
+    }
+    
+    .file-item:last-child {
+        border-bottom: none;
+    }
+    
+    .file-icon {
+        margin-right: 15px;
+        font-size: 1.2em;
+    }
+    
+    .file-name {
+        flex: 1;
+        font-family: 'Courier New', monospace;
+        color: #495057;
+    }
+    
+    .file-link {
+        color: #007bff;
+        text-decoration: none;
+        font-weight: 500;
+    }
+    
+    .file-link:hover {
+        text-decoration: underline;
+    }
+    
+    .file-size {
+        color: #6c757d;
+        font-size: 0.9em;
+        margin-left: 15px;
+    }
+    
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        color: #6c757d;
+    }
+    
+    .empty-state h3 {
+        font-size: 1.5em;
+        margin-bottom: 15px;
+        color: #495057;
+    }
+    
+    .back-btn {
+        margin-bottom: 20px;
+    }
+    
+    .stats {
+        background: linear-gradient(135deg, #e8f4f8, #d1ecf1);
+        border-radius: 8px;
+        padding: 15px 20px;
+        margin-bottom: 20px;
+        color: #0c5460;
+    }
+    
+    .stats h4 {
+        margin-bottom: 5px;
+    }
+</style>
+
+<div class="back-btn">
+    <a href="{{ url_for('branch_detail', repo_name=repo_name, branch_name=branch_name) }}" class="btn btn-secondary">← Back to {{ branch_name }}</a>
+</div>
+
+{% if files %}
+    <div class="stats">
+        <h4>{{ files|length }} files found</h4>
+        <p>Files in {{ repo_name }}/{{ branch_name }}/{{ report_type }}/</p>
+    </div>
+    
+    <div class="file-list">
+        {% for file in files %}
+        {% set filename = file.split('/')[-1] %}
+        {% set file_path = file %}
+        <div class="file-item">
+            <div class="file-icon">
+                {% if filename.endswith(('.json', '.xml')) %}
+                    📄
+                {% elif filename.endswith(('.png', '.jpg', '.jpeg', '.gif')) %}
+                    🖼️
+                {% elif filename.endswith('.html') %}
+                    🌐
+                {% elif filename.endswith('.txt') %}
+                    📝
+                {% else %}
+                    📋
+                {% endif %}
+            </div>
+            <div class="file-name">
+                <a href="{{ url_for('serve_file', path=file_path) }}" class="file-link" target="_blank">
+                    {{ filename }}
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="empty-state">
+        <h3>No Files Found</h3>
+        <p>The {{ report_type }} directory is empty or doesn't exist.</p>
+    </div>
+{% endif %}
+{% endblock %}
