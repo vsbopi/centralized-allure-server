@@ -42,7 +42,7 @@ A Python web server that serves Allure test reports from an S3 bucket with a bea
 
 | Main Dashboard | Repository View | Branch Reports |
 |:---:|:---:|:---:|
-| <img width="340" height="187" alt="Dashboard" src="https://github.com/user-attachments/assets/c6178a78-b3e4-47ed-a16b-d0e9b12a8eb7" /> | <img width="340" height="187" alt="Repository" src="https://github.com/user-attachments/assets/f251fccd-753c-4ecf-bac3-1b6c5ec1d559" /> | <img width="340" height="187" alt="Reports" src="https://github.com/user-attachments/assets/0881619f-ac03-4521-a1ef-edd80627d784" /> |
+| <img width="1392" height="732" alt="image" src="https://github.com/user-attachments/assets/5d964589-336e-47bd-a07a-70eecfb3ecac" /> | <img width="1371" height="768" alt="image" src="https://github.com/user-attachments/assets/d9aa9bf5-8892-478e-a879-1013f09b4b90" />| <img width="1376" height="907" alt="image" src="https://github.com/user-attachments/assets/6af46061-faf3-4f37-9496-3b7402ba72d4" /> |
 
 
 ## Directory Structure
