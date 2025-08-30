@@ -1,7 +1,7 @@
 # Centralized Allure Reports Server
 
-[![CI/CD Pipeline](https://github.com/your-username/centralized-allure-reports/actions/workflows/ci.yml/badge.svg)](https://github.com/your-username/centralized-allure-reports/actions/workflows/ci.yml)
-[![Docker Build](https://github.com/your-username/centralized-allure-reports/actions/workflows/docker.yml/badge.svg)](https://github.com/your-username/centralized-allure-reports/actions/workflows/docker.yml)
+[![CI/CD Pipeline](https://github.com/vsbopi/centralized-allure-reports/actions/workflows/ci.yml/badge.svg)](https://github.com/vsbopi/centralized-allure-reports/actions/workflows/ci.yml)
+[![Docker Build](https://github.com/vsbopi/centralized-allure-reports/actions/workflows/docker.yml/badge.svg)](https://github.com/vsbopi/centralized-allure-reports/actions/workflows/docker.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=flat&logo=docker&logoColor=white)](https://hub.docker.com/)
