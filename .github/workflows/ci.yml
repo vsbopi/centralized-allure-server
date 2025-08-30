@@ -12,6 +12,7 @@ jobs:
     strategy:
       matrix:
         python-version: [3.8, 3.9, '3.10', '3.11']
+      fail-fast: false  # Don't cancel other jobs if one fails
 
     steps:
     - uses: actions/checkout@v4
@@ -34,6 +35,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
         pip install pytest pytest-cov flake8
+        echo "✅ Dependencies installed for Python ${{ matrix.python-version }}"
 
     - name: Lint with flake8
       run: |
@@ -73,3 +75,25 @@ jobs:
       if: always()
       with:
         sarif_file: 'trivy-results.sarif'
+
+  # Summary job to provide overall status
+  ci-success:
+    runs-on: ubuntu-latest
+    needs: [test, security]
+    if: always()
+    steps:
+    - name: Check overall CI status
+      run: |
+        echo "Test job status: ${{ needs.test.result }}"
+        echo "Security job status: ${{ needs.security.result }}"
+        
+        if [[ "${{ needs.test.result }}" == "success" && "${{ needs.security.result }}" == "success" ]]; then
+          echo "✅ All CI jobs passed successfully!"
+          exit 0
+        elif [[ "${{ needs.test.result }}" == "success" && "${{ needs.security.result }}" != "failure" ]]; then
+          echo "✅ Core tests passed! Security scan completed with warnings."
+          exit 0
+        else
+          echo "❌ CI pipeline failed. Check individual job results above."
+          exit 1
+        fi
