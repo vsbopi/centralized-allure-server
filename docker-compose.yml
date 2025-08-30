@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  allure-reports:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: allure-reports-server
+    ports:
+      - "8080:8080"
+    environment:
+      - PORT=8080
+      - DEBUG=false
+      - S3_BUCKET_NAME=${S3_BUCKET_NAME}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_REGION=${AWS_REGION:-us-east-1}
+      - HOST=0.0.0.0
+    env_file:
+      - .env
+    restart: unless-stopped
+    networks:
+      - allure-network
+    volumes:
+      # Optional: Mount logs directory for persistence
+      - ./logs:/app/logs
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.allure-reports.rule=Host(`allure.yourdomain.com`)"
+      - "traefik.http.services.allure-reports.loadbalancer.server.port=8080"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks:
+  allure-network:
+    driver: bridge
+
+volumes:
+  logs:
+    driver: local
