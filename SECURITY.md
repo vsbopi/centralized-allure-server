@@ -21,7 +21,7 @@ Please do not report security vulnerabilities through public GitHub issues, disc
 
 Instead, please report security vulnerabilities by:
 
-- **Email**: Send details to [your-email@domain.com] (replace with your actual email)
+- **Email**: Send details to vsbopi@gmail.com
 - **GitHub Security Advisories**: Use the "Report a vulnerability" feature in the Security tab of this repository
 
 ### 3. Include the following information
@@ -84,7 +84,8 @@ Security updates will be:
 ## Contact
 
 For security-related questions or concerns, please contact:
-- Email: [your-email@domain.com] (replace with your actual email)
+- Email: vsbopi@gmail.com
 - GitHub: Create a private security advisory
 
 Thank you for helping keep our project secure!
+
